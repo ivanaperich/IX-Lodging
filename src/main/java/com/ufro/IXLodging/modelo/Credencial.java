@@ -15,6 +15,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -50,6 +53,11 @@ public class Credencial implements Serializable {
     private String contraseña;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCredencial", fetch = FetchType.LAZY)
     private List<Usuario> usuarioList;
+    @JoinTable(name = "usuario_hospedaje", joinColumns = {
+        @JoinColumn(name = "id_usuario", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "id_hospedaje", referencedColumnName = "id")})
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Hospedaje> hospedajeList;
 
     public Credencial() {
     }
@@ -80,6 +88,10 @@ public class Credencial implements Serializable {
         this.nombreUsuario = nombreUsuario;
     }
 
+    public List<Hospedaje> getHospedajeList() {
+        return hospedajeList;
+    }
+    
     public String getContraseña() {
         return contraseña;
     }
