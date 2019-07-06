@@ -31,19 +31,22 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Feedback.findAll", query = "SELECT f FROM Feedback f")})
 public class Feedback implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "calificacion")
+    private float calificacion;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "comentarios")
+    private String comentarios;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_FeedBack")
     private Integer idFeedBack;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "calificacion")
-    private float calificacion;
-    @Size(max = 255)
-    @Column(name = "comentarios")
-    private String comentarios;
     @JoinColumn(name = "id_Usuario", referencedColumnName = "idUsuario")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Usuario idUsuario;
@@ -71,21 +74,6 @@ public class Feedback implements Serializable {
         this.idFeedBack = idFeedBack;
     }
 
-    public float getCalificacion() {
-        return calificacion;
-    }
-
-    public void setCalificacion(float calificacion) {
-        this.calificacion = calificacion;
-    }
-
-    public String getComentarios() {
-        return comentarios;
-    }
-
-    public void setComentarios(String comentarios) {
-        this.comentarios = comentarios;
-    }
 
     public Usuario getIdUsuario() {
         return idUsuario;
@@ -126,6 +114,22 @@ public class Feedback implements Serializable {
     @Override
     public String toString() {
         return "com.ufro.IXLodging.modelo.Feedback[ idFeedBack=" + idFeedBack + " ]";
+    }
+
+    public float getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(float calificacion) {
+        this.calificacion = calificacion;
+    }
+
+    public String getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(String comentarios) {
+        this.comentarios = comentarios;
     }
     
 }

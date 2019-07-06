@@ -34,12 +34,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")})
 public class Usuario implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "idUsuario")
-    private Integer idUsuario;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -59,12 +53,25 @@ public class Usuario implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "nacionalidad")
     private String nacionalidad;
+    @Size(max = 40)
+    @Column(name = "nombreHospedaje")
+    private String nombreHospedaje;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "calificacion")
+    private Float calificacion;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 30)
     @Column(name = "email")
     private String email;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idUsuario")
+    private Integer idUsuario;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private List<Feedback> feedbackList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idUsuario", fetch = FetchType.LAZY)
@@ -97,45 +104,6 @@ public class Usuario implements Serializable {
         this.idUsuario = idUsuario;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public int getEdad() {
-        return edad;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
-    public String getNacionalidad() {
-        return nacionalidad;
-    }
-
-    public void setNacionalidad(String nacionalidad) {
-        this.nacionalidad = nacionalidad;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public List<Feedback> getFeedbackList() {
         return feedbackList;
@@ -184,6 +152,62 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "com.ufro.IXLodging.modelo.Usuario[ idUsuario=" + idUsuario + " ]";
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+
+    public void setEdad(int edad) {
+        this.edad = edad;
+    }
+
+    public String getNacionalidad() {
+        return nacionalidad;
+    }
+
+    public void setNacionalidad(String nacionalidad) {
+        this.nacionalidad = nacionalidad;
+    }
+
+    public String getNombreHospedaje() {
+        return nombreHospedaje;
+    }
+
+    public void setNombreHospedaje(String nombreHospedaje) {
+        this.nombreHospedaje = nombreHospedaje;
+    }
+
+    public Float getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(Float calificacion) {
+        this.calificacion = calificacion;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
     
 }

@@ -35,24 +35,21 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Pieza.findAll", query = "SELECT p FROM Pieza p")})
 public class Pieza implements Serializable {
 
+    @Lob
+    @Column(name = "compartida")
+    private byte[] compartida;
+    @Column(name = "nro_ba\u00f1os")
+    private Integer nroBaños;
+    @Size(max = 100)
+    @Column(name = "nombre_pieza")
+    private String nombrePieza;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idPieza")
     private Integer idPieza;
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Column(name = "compartida")
-    private byte[] compartida;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "nro_baños")
-    private int nroBaños;
-    @Size(max = 100)
-    @Column(name = "nombre_pieza")
-    private String nombrePieza;
     @JoinColumn(name = "id_Hospedaje", referencedColumnName = "idHospedaje")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Hospedaje idHospedaje;
@@ -80,13 +77,6 @@ public class Pieza implements Serializable {
         this.idPieza = idPieza;
     }
 
-    public byte[] getCompartida() {
-        return compartida;
-    }
-
-    public void setCompartida(byte[] compartida) {
-        this.compartida = compartida;
-    }
 
     public int getNroBaños() {
         return nroBaños;
@@ -144,5 +134,16 @@ public class Pieza implements Serializable {
     public String toString() {
         return "com.ufro.IXLodging.modelo.Pieza[ idPieza=" + idPieza + " ]";
     }
-    
+
+    public byte[] getCompartida() {
+        return compartida;
+    }
+
+    public void setCompartida(byte[] compartida) {
+        this.compartida = compartida;
+    }
+
+    public void setNroBaños(Integer nroBaños) {
+        this.nroBaños = nroBaños;
+    }
 }

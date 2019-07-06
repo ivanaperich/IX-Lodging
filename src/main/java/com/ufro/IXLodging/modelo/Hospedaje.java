@@ -34,27 +34,31 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Hospedaje.findAll", query = "SELECT h FROM Hospedaje h")})
 public class Hospedaje implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "due\u00f1o")
+    private String dueño;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    @Column(name = "descripcion")
+    private String descripcion;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "ubicacion")
+    private String ubicacion;
+    @Size(max = 50)
+    @Column(name = "nombre")
+    private String nombre;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idHospedaje")
     private Integer idHospedaje;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "dueño")
-    private String dueño;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "nombre")
-    private String nombre;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 255)
-    @Column(name = "descripcion")
-    private String descripcion;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 00)
@@ -101,29 +105,6 @@ public class Hospedaje implements Serializable {
         this.idHospedaje = idHospedaje;
     }
 
-    public String getDueño() {
-        return dueño;
-    }
-
-    public void setDueño(String dueño) {
-        this.dueño = dueño;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
 
     public String getCiudad() {
         return ciudad;
@@ -196,6 +177,38 @@ public class Hospedaje implements Serializable {
     @Override
     public String toString() {
         return "com.ufro.IXLodging.modelo.Hospedaje[ idHospedaje=" + idHospedaje + " ]";
+    }
+
+    public String getDueño() {
+        return dueño;
+    }
+
+    public void setDueño(String dueño) {
+        this.dueño = dueño;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
     
 }

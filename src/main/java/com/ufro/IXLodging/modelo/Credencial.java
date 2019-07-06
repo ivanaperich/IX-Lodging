@@ -35,12 +35,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Credencial.findAll", query = "SELECT c FROM Credencial c")})
 public class Credencial implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id_Credencial")
-    private Integer idCredencial;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -51,6 +45,13 @@ public class Credencial implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "contrase\u00f1a")
     private String contraseña;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_Credencial")
+    private Integer idCredencial;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idCredencial", fetch = FetchType.LAZY)
     private List<Usuario> usuarioList;
     @JoinTable(name = "usuario_hospedaje", joinColumns = {
@@ -80,25 +81,11 @@ public class Credencial implements Serializable {
         this.idCredencial = idCredencial;
     }
 
-    public String getNombreUsuario() {
-        return nombreUsuario;
-    }
-
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
-    }
 
     public List<Hospedaje> getHospedajeList() {
         return hospedajeList;
     }
     
-    public String getContraseña() {
-        return contraseña;
-    }
-
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
-    }
 
     public List<Usuario> getUsuarioList() {
         return usuarioList;
@@ -131,6 +118,22 @@ public class Credencial implements Serializable {
     @Override
     public String toString() {
         return "com.ufro.IXLodging.modelo.Credencial[ idCredencial=" + idCredencial + " ]";
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
     
 }
