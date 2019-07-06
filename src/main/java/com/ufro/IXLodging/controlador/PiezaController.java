@@ -8,8 +8,11 @@ package com.ufro.IXLodging.controlador;
 import com.ufro.IXLodging.DAO.HospedajeDAO;
 import com.ufro.IXLodging.DAO.PiezaDAO;
 import com.ufro.IXLodging.DAO.UsuarioDAO;
+import com.ufro.IXLodging.modelo.Cama;
 import com.ufro.IXLodging.modelo.Credencial;
+import com.ufro.IXLodging.modelo.Hospedaje;
 import com.ufro.IXLodging.modelo.Pieza;
+import com.ufro.IXLodging.modelo.Usuario;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -34,131 +37,77 @@ public class PiezaController {
     HospedajeDAO hDao;
 
     @GetMapping("hospedajes/{idHospedaje}/piezas")
-    public String verRecetasPaciente(
+    public String verPiezasHospedaje(
             HttpServletRequest request,
             @PathVariable("idHospedaje") int idHospedaje,
             Model model
     ) {
 
-        Credencial c = (Credencial) request.getSession().getAttribute("medicoLogueado");
+        Credencial c = (Credencial) request.getSession().getAttribute("usuarioLogueado");
 
         int idUsuario = c.getIdCredencial();
         List<Pieza> piezas = pDao.findByIdUsuario_IdAndIdHospedaje_Id(idUsuario, idHospedaje);
         model.addAttribute("piezas", piezas);
         return "verPiezas";
     }
-}
 
-@GetMapping("recetas/emitidas")
-        public String verRecetasEmitidas(
-        HttpServletRequest request,
-        Model model
-    ){
-        
-        Credencial c = (Credencial) request.getSession().getAttribute("medicoLogueado");
-        
-        if(c ==null){
-            
-            return "redirect:/login";
-        }else{
-            int idMedico = c.getIdMedico().getId();
-            List<Receta> recetas = rDao.findByIdMedico_Id(idMedico);
-            model.addAttribute("recetas", recetas);
-            return "verRecetas";
-        }
-    }
-    
-    @GetMapping("recetas/{idReceta}/ver")
-        public String verReceta(
-        Model model,
-        @PathVariable("idReceta") int idReceta
-    ){
-        
-        
-        Receta r = rDao.findById(idReceta);
-        model.addAttribute("receta", r);
-        
-        return "receta";
-    }
-    
-    
-    @GetMapping("pacientes/{idPaciente}/recetas/nueva")
-        public String muestraFormReceta(
-        @PathVariable("idPaciente") int idPaciente,
-        Model model,
-        HttpServletRequest request
-    ){
-        
-        Credencial c = (Credencial) request.getSession().getAttribute("medicoLogueado");
-        
-        if(c==null){
-            return "redirect:/login";
-        }else{
-            int idMedico = c.getIdMedico().getId();
+    @GetMapping("piezas/{idPieza}/ver")
+    public String verPieza(
+            Model model,
+            @PathVariable("idPieza") int idPieza
+    ) {
 
-            Paciente p = pDao.findById(idPaciente);
-            Medico m = mDao.findById(idMedico);
+        Pieza p = pDao.findById(idPieza);
+        model.addAttribute("pieza", p);
 
-            Receta r = new Receta();
-            r.setIdPaciente(p);
-            r.setIdMedico(m);
+        return "pieza";
+    }
 
-            for (int i = 1; i <= 5; i++) {
-                r.getItemRecetaList().add(new ItemReceta());
-            }
+    @GetMapping("hospedajes/{idHospedaje}/piezas/nueva")
+    public String muestraFormPieza(
+            @PathVariable("idHospedaje") int idHospedaje,
+            Model model,
+            HttpServletRequest request
+    ) {
 
-            model.addAttribute("receta", new Receta());
-            return "nuevaReceta";
-        }
-        
+        Credencial c = (Credencial) request.getSession().getAttribute("usuarioLogueado");
+
+        int idUsuario = c.getIdCredencial();
+
+        Hospedaje h = hDao.findById(idHospedaje);
+        Usuario u = uDao.findById(idUsuario);
+
+        Pieza p = new Pieza();
+        p.setIdHospedaje(h);
+        p.setIdUsuario(u);
+
+        p.getCamaList().add(new Cama());
+
+        model.addAttribute("pieza", new Pieza());
+        return "nuevaPieza";
     }
-    
-    
-    @PostMapping("pacientes/{idPaciente}/recetas/nueva")
-        public String muestraFormReceta(
-        Model model,
-        @PathVariable("idPaciente") int idPaciente,
-        @ModelAttribute Receta r,
-        HttpServletRequest request
-    ){
-        
-        Credencial c = (Credencial) request.getSession().getAttribute("medicoLogueado");
-        int idMedico = c.getIdMedico().getId();
-        if(c ==null){
-            
-            return "redirect:/login";
-        }else{
-            
-            Paciente p = pDao.findById(idPaciente);
-            Medico m = mDao.findById(idMedico);
-            
-            r.setIdMedico(m);
-            r.setIdPaciente(p);
-            r.setFecha(new Date());
-            
-            rDao.save(r);
-            
-            return "redirect:/pacientes/"+idPaciente+"/recetas";
-        }
-        
+
+    @PostMapping("hospedajes/{idHospedaje}/piezas/nueva")
+    public String muestraFormPieza(
+            Model model,
+            @PathVariable("idHospedaje") int idHospedaje,
+            @ModelAttribute Pieza p,
+            HttpServletRequest request
+    ) {
+
+        Credencial c = (Credencial) request.getSession().getAttribute("usuarioLogueado");
+        int idUsuario = c.getIdCredencial();
+
+        Hospedaje h = hDao.findById(idHospedaje);
+        Usuario u = uDao.findById(idUsuario);
+
+        p.setIdUsuario(u);
+        p.setIdHospedaje(h);
+        p.setFecha(new Date());
+
+        pDao.save(p);
+
+        return "redirect:/hospedajes/" + idHospedaje + "/piezas";
     }
-    
-    
-    @PostMapping("recetas/{idReceta}/eliminar")
-        public String eliminarReceta(
-    
-        @PathVariable("idReceta") int idReceta
-    ){
-        
-        Receta r = rDao.findById(idReceta);
-        
-        int idPaciente=r.getIdPaciente().getId();
-        
-        rDao.delete(r);
-        
-        return "redirect:/pacientes/"+idPaciente+"/recetas";
-    }
-    
-    
-    
+
 }
